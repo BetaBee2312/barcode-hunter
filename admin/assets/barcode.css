@@ -1,0 +1,21 @@
+.barcode-note{display:flex;gap:9px;align-items:flex-start;margin-top:18px;padding:11px 12px;border:1px solid #e8edf5;border-radius:9px;background:#f8faff;color:#6d7b90;font-size:10px;line-height:1.55}.barcode-note i{color:#315efb;font-size:14px}.barcode-note strong{color:#44536a}.barcode-table td:first-child{min-width:180px}.barcode-table .barcode-serial{display:block;color:#2c3748;font-weight:750;word-break:break-all}.barcode-actions{display:flex;justify-content:flex-end;gap:5px;white-space:nowrap}.barcode-actions .btn{width:30px;height:29px;padding:3px}.barcode-actions .btn-transfer{width:auto;padding:3px 8px}.barcode-loading{text-align:center;color:#8995a6;padding:26px}.modal-content{border:0;border-radius:14px;box-shadow:0 15px 50px rgba(20,35,60,.16)}.modal-header,.modal-footer{border-color:#edf0f4}.modal-title{font-size:16px;font-weight:750}.modal .form-label{font-size:12px;font-weight:700;color:#526074}
+
+.barcode-hint{display:-webkit-box;max-width:360px;overflow:hidden;color:#657286;font-size:10px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal}
+.barcode-table td:nth-child(2){min-width:220px;max-width:360px}
+
+/* Download dan cetak label barcode */
+.barcode-download-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:14px 0 16px;padding:13px 15px;border:1px solid var(--bs-border-color,#e5e7eb);border-radius:12px;background:var(--bs-tertiary-bg,#f8fafc)}
+.barcode-download-toolbar strong{display:block;font-size:.9rem;color:var(--bs-emphasis-color,#1f2937)}
+.barcode-download-toolbar small{display:block;margin-top:3px;color:var(--bs-secondary-color,#64748b);font-size:.78rem}
+.barcode-actions{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap}
+.barcode-format-options{display:grid;grid-template-columns:1fr;gap:10px}
+.barcode-format-option{display:flex;align-items:center;gap:13px;width:100%;padding:13px;border:1px solid var(--bs-border-color,#e5e7eb);border-radius:12px;background:var(--bs-body-bg,#fff);text-align:left;color:var(--bs-body-color,#212529);transition:border-color .15s,background .15s}
+.barcode-format-option:hover,.barcode-format-option:focus{border-color:var(--bs-primary,#315efb);background:var(--bs-primary-bg-subtle,#f1f5ff);outline:0}
+.barcode-format-option>span:nth-child(2){flex:1;min-width:0}
+.barcode-format-option strong,.barcode-format-option small{display:block}
+.barcode-format-option small{margin-top:3px;color:var(--bs-secondary-color,#6c757d);font-size:.78rem;line-height:1.4}
+.barcode-format-option>i:last-child{font-size:1.1rem;color:var(--bs-primary,#315efb)}
+.barcode-format-preview{display:flex;align-items:center;justify-content:center;flex:0 0 64px;width:64px;height:54px;border:1px solid var(--bs-border-color,#e5e7eb);border-radius:9px;background:#fff;color:#111}
+.barcode-format-preview-linear i{font-size:2rem;transform:scaleX(1.2)}
+.barcode-format-preview-qr i{font-size:2rem}
+@media(max-width:640px){.barcode-download-toolbar{align-items:stretch;flex-direction:column}.barcode-download-toolbar .btn{width:100%}.barcode-actions{justify-content:flex-start}.barcode-actions .btn-transfer{font-size:.75rem}}

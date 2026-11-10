@@ -1,0 +1,93 @@
+:root {
+    --sidebar-width: 248px;
+    --ink: #182230;
+    --muted: #788496;
+    --line: #e9edf2;
+    --page: #f5f7fa;
+    --primary: #315efb;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+a { text-decoration: none; }
+.admin-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 1100; display: flex; flex-direction: column; width: var(--sidebar-width); max-width: min(var(--sidebar-width), 88vw); padding: 22px 15px 16px; color: #e8edf6; background: #141c2b; transform: translateX(-105%); visibility: hidden; transition: transform .22s ease, visibility .22s ease; box-shadow: 18px 0 48px rgba(12,20,35,.18); overflow-y: auto; }
+.admin-sidebar.show { transform: translateX(0); visibility: visible; }
+body.sidebar-open { overflow: hidden; }
+.admin-brand { display: flex; align-items: center; gap: 11px; padding: 2px 8px 24px; color: #fff; border-bottom: 1px solid rgba(255,255,255,.09); }
+.admin-brand:hover { color: #fff; }
+.admin-brand-icon { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 11px; color: #fff; background: var(--primary); font-size: 19px; }
+.admin-brand-copy strong, .admin-brand-copy small { display: block; }
+.admin-brand-copy strong { font-size: 12px; letter-spacing: .55px; }
+.admin-brand-copy small { margin-top: 3px; color: #9ba7ba; font-size: 10px; }
+.sidebar-label { margin: 25px 10px 8px; color: #78869c; font-size: 9px; font-weight: 750; letter-spacing: 1.15px; text-transform: uppercase; }
+.sidebar-link { display: flex; align-items: center; gap: 12px; min-height: 42px; margin: 2px 0; padding: 0 11px; border-radius: 8px; color: #b4bfd0; font-size: 12px; transition: background .15s ease, color .15s ease; }
+.sidebar-link > i { width: 18px; color: #91a0b6; font-size: 15px; text-align: center; }
+.sidebar-link:hover { color: #fff; background: rgba(255,255,255,.065); }
+.sidebar-link.disabled { cursor: not-allowed; opacity: .62; }
+.sidebar-link.active { color: #fff; background: rgba(76,112,255,.19); box-shadow: inset 3px 0 #7692ff; }
+.sidebar-link.active > i { color: #9fb2ff; }
+.sidebar-soon { margin-left: auto; color: #8390a5; font-size: 9px; }
+.sidebar-footer { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 15px 8px 2px; border-top: 1px solid rgba(255,255,255,.09); }
+.sidebar-footer-mark { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 9px; color: #a7b8ff; background: rgba(100,130,255,.13); }
+.sidebar-footer strong, .sidebar-footer small { display: block; }
+.sidebar-footer strong { color: #dbe3f0; font-size: 10px; }
+.sidebar-footer small { margin-top: 2px; color: #8491a6; font-size: 9px; }
+.admin-main { min-height: 100vh; margin-left: 0; width: 100%; }
+.admin-topbar { display: flex; align-items: center; justify-content: space-between; min-height: 76px; padding: 13px 30px; background: #fff; border-bottom: 1px solid var(--line); }
+.topbar-left { display: flex; align-items: center; gap: 13px; }
+.topbar-breadcrumb { margin-bottom: 3px; color: #929daf; font-size: 10px; }
+.topbar-breadcrumb span { margin: 0 5px; color: #c1c8d2; }
+.admin-topbar h1 { margin: 0; font-size: 17px; font-weight: 750; letter-spacing: -.2px; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.admin-avatar { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 50%; color: #526bca; background: #edf1ff; font-size: 16px; }
+.admin-account strong, .admin-account small { display: block; }
+.admin-account strong { font-size: 11px; }
+.admin-account small { margin-top: 2px; color: var(--muted); font-size: 9px; }
+.mobile-menu-button { display: inline-grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font-size: 21px; cursor: pointer; transition: background .15s ease, border-color .15s ease; }
+.mobile-menu-button:hover { border-color: #d6def4; background: #f7f8ff; }
+.page-content { width: min(1500px, 100%); margin: 0 auto; padding: 28px 30px 40px; }
+.page-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 20px; }
+.page-heading h2 { margin: 0 0 5px; font-size: 22px; font-weight: 780; letter-spacing: -.55px; }
+.page-heading p { margin: 0; color: var(--muted); font-size: 12px; }
+.branch-filter { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+.branch-filter label { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.branch-filter select { min-width: 130px; padding: 2px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 11px; }
+.winner-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.winner-card { position: relative; overflow: hidden; padding: 19px; border: 1px solid var(--line); border-radius: 13px; background: #fff; box-shadow: 0 3px 12px rgba(22,34,60,.025); }
+.winner-card::before { position: absolute; inset: 0 auto 0 0; width: 3px; background: #d5a332; content: ""; }
+.winner-card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 17px; }
+.branch-name { color: #687588; font-size: 11px; font-weight: 650; }
+.branch-code { margin-top: 3px; color: #9aa4b3; font-family: ui-monospace, monospace; font-size: 10px; }
+.winner-rank { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; border-radius: 30px; color: #91691c; background: #fff5dc; font-size: 9px; font-weight: 800; letter-spacing: .3px; text-transform: uppercase; }
+.winner-person { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.winner-medal { display: grid; flex: 0 0 43px; place-items: center; width: 43px; height: 43px; border-radius: 12px; color: #a8791e; background: #fff6df; font-size: 19px; }
+.winner-person-copy { min-width: 0; }
+.winner-person-copy strong { display: block; overflow: hidden; color: #202b3b; font-size: 15px; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.winner-person-copy small { display: block; margin-top: 4px; color: #8b96a6; font-family: ui-monospace, monospace; font-size: 10px; }
+.winner-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 17px; padding-top: 14px; border-top: 1px solid #f0f2f5; }
+.metric-label { display: block; margin-bottom: 5px; color: #929cac; font-size: 9px; }
+.metric-value { display: block; color: #344154; font-size: 12px; font-weight: 750; }
+.winner-status { display: inline-block; margin-top: 13px; padding: 5px 8px; border-radius: 30px; color: #69778b; background: #f1f3f6; font-size: 9px; font-weight: 700; }
+.winner-status.completed { color: #14805a; background: #e8f7f0; }
+.empty-state { grid-column: 1 / -1; padding: 46px 20px; border: 1px dashed #d9e0e8; border-radius: 13px; background: rgba(255,255,255,.7); color: #8792a3; text-align: center; }
+.empty-state i { display: block; margin-bottom: 10px; color: #aab4c2; font-size: 27px; }
+.empty-state strong { display: block; margin-bottom: 5px; color: #556174; font-size: 13px; }
+.empty-state p { margin: 0; font-size: 11px; }
+.admin-alert { margin-bottom: 16px; padding: 12px 14px; border: 1px solid #f2d7a1; border-radius: 9px; color: #805e21; background: #fff9eb; font-size: 11px; }
+.admin-alert.danger { border-color: #f1c7cb; color: #923d47; background: #fff4f5; }
+.page-footer { margin-top: 28px; color: #a1aab7; font-size: 10px; text-align: center; }
+.sidebar-backdrop { position: fixed; inset: 0; z-index: 1090; display: block; background: rgba(15,23,42,.48); opacity: 0; visibility: hidden; transition: opacity .22s ease, visibility .22s ease; }
+.sidebar-backdrop.show { opacity: 1; visibility: visible; }
+@media (max-width: 1100px) { .winner-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 767.98px) {
+    .admin-topbar { min-height: 67px; padding: 11px 16px; }
+    .page-content { padding: 22px 16px 30px; }
+    .page-heading { align-items: stretch; flex-direction: column; }
+    .branch-filter { justify-content: space-between; }
+    .branch-filter select { flex: 1; }
+}
+@media (max-width: 420px) {
+    .admin-account { display: none; }
+    .winner-card { padding: 15px; }
+    .winner-metrics { gap: 5px; }
+    .metric-value { font-size: 11px; }
+}

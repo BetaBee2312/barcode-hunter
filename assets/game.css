@@ -1,0 +1,319 @@
+/*
+ * BARCODE HUNTING - CSS KONSUMEN
+ * Silakan ubah logo, warna, ukuran, radius, footer, dan branding di file ini.
+ */
+:root {
+    --page-bg: #f7f2c9;
+    --surface: #ffffff;
+    --ink: #202124;
+    --muted: #626262;
+    --scanner-bg: #c9d2da;
+    --brand-primary: #f5d84d;
+    --brand-primary-dark: #e7bd24;
+    --success: #16834a;
+    --danger: #b42318;
+    --card-radius: 22px;
+    --page-width: 430px;
+    --page-padding: 16px;
+    --logo-width: 210px;
+    --logo-height: 64px;
+    --scanner-width: min(76vw, 320px);
+    --scanner-height: min(86vw, 360px);
+    /* Contoh mengganti logo: --logo-image: url('../assets/img/logo-yang-kamu-pakai.png'); */
+    --logo-image: none;
+    --footer-left-image: none;
+    --footer-right-image: none;
+    --footer-left-width: 110px;
+    --footer-right-width: 110px;
+    --footer-image-height: 15px;
+    --font-family: Arial, Helvetica, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { min-height: 100%; background: #eef0f2; }
+body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    color: var(--ink);
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+
+.consumer-page {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0;
+    background: #eef0f2;
+}
+.game-shell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, var(--page-width));
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 18px var(--page-padding) 0;
+    overflow: hidden;
+    background: var(--page-bg);
+}
+.brand-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    min-height: 70px;
+    padding: 0 0 10px;
+}
+.brand-logo {
+    width: min(var(--logo-width), 75%);
+    height: var(--logo-height);
+    flex: 0 0 auto;
+    background-image: var(--logo-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    /* Biarkan kosong sampai logo disediakan. */
+}
+.branch-chip {
+    max-width: 100%;
+    padding: 3px 10px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.3;
+    text-align: center;
+}
+
+/* Form registrasi */
+.register-shell { justify-content: flex-start; }
+.register-content {
+    width: 100%;
+    max-width: 360px;
+    margin: clamp(25px, 8vh, 64px) auto 28px;
+}
+.eyebrow {
+    margin: 0 0 7px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+}
+.register-content h1 {
+    margin: 0;
+    font-size: clamp(25px, 7vw, 32px);
+    line-height: 1.15;
+    font-weight: 750;
+}
+.register-content .branch-name {
+    margin: 8px 0 24px;
+    color: var(--muted);
+    font-size: 13px;
+}
+.register-form { display: flex; flex-direction: column; gap: 9px; }
+.register-form label {
+    margin-top: 7px;
+    font-size: 13px;
+    font-weight: 700;
+}
+.register-form input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid rgba(30, 30, 30, .16);
+    border-radius: 11px;
+    outline: none;
+    background: rgba(255,255,255,.88);
+    color: var(--ink);
+}
+.register-form input:focus {
+    border-color: var(--brand-primary-dark);
+    box-shadow: 0 0 0 3px rgba(231,189,36,.18);
+}
+.primary-button, .scanner-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--brand-primary);
+    color: #29230c;
+    font-weight: 750;
+    cursor: pointer;
+}
+.primary-button { margin-top: 14px; width: 100%; }
+.primary-button:disabled { opacity: .6; cursor: wait; }
+.form-note { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; text-align: center; }
+
+/* Area scan mengikuti kotak besar pada referensi gambar. */
+.scanner-section { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.scanner-box {
+    position: relative;
+    width: var(--scanner-width);
+    height: var(--scanner-height);
+    max-width: 100%;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: var(--card-radius);
+    background: var(--scanner-bg);
+    isolation: isolate;
+}
+#reader { border: 0 !important; }
+#reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: var(--card-radius);
+}
+#reader__scan_region { min-height: 100% !important; background: transparent !important; }
+#reader__scan_region img { display: none !important; }
+#reader__dashboard, #reader__header_message, #reader__status_span { display: none !important; }
+#reader__camera_selection, #reader__camera_permission_button { display: none !important; }
+.scanner-placeholder {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 20px;
+    color: #34404a;
+    text-align: center;
+}
+.scanner-placeholder p { margin: 0; font-size: 12px; }
+.scanner-placeholder-icon { font-size: 40px; line-height: 1; opacity: .65; }
+.scanner-button { min-height: 40px; border-radius: 10px; font-size: 12px; }
+.scanner-status { min-height: 14px; margin: 0; color: var(--muted); font-size: 10px; text-align: center; }
+
+.timer-section { width: 100%; margin-top: 7px; text-align: center; }
+.section-label { color: #252525; font-size: 13px; line-height: 1.4; }
+.timer-value { margin-top: 2px; font-size: clamp(22px, 6vw, 27px); font-weight: 750; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.progress-line {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 10px;
+}
+.progress-line span:first-child { color: var(--ink); font-weight: 700; }
+.progress-track { width: min(78%, 260px); height: 5px; margin: 7px auto 0; overflow: hidden; border-radius: 99px; background: rgba(0,0,0,.12); }
+.progress-track span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--success); transition: width .2s ease; }
+.hint-section { width: 100%; margin: 12px 0 14px; text-align: center; }
+.hint-section .section-label { margin-bottom: 5px; }
+.hint-text { min-height: 19px; margin: 0 auto; max-width: 340px; color: #363636; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+
+.brand-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 24px;
+    width: calc(100% + (2 * var(--page-padding)));
+    margin: auto calc(-1 * var(--page-padding)) 0;
+    padding: 5px 10px;
+    background: linear-gradient(180deg, #ffe66c, #f2cb35);
+    color: #55420a;
+    font-size: 9px;
+    font-weight: 700;
+    text-align: center;
+}
+.footer-left, .footer-right {
+    display: block;
+    width: var(--footer-left-width);
+    height: var(--footer-image-height);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.footer-left { background-image: var(--footer-left-image); }
+.footer-right { width: var(--footer-right-width); background-image: var(--footer-right-image); }
+
+.notice { margin-top: 14px; padding: 11px 13px; border-radius: 10px; font-size: 12px; line-height: 1.5; }
+.notice-error { background: #fff0ef; color: #8d2118; border: 1px solid #f2c3bf; }
+.notice-success { background: #eaf8ef; color: #17623a; border: 1px solid #bde4c9; }
+.notice-info { background: rgba(255,255,255,.75); color: var(--ink); }
+
+.game-overlay {
+    position: fixed;
+    z-index: 20;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(22, 27, 31, .58);
+}
+.overlay-card {
+    width: min(100%, 340px);
+    padding: 27px 22px 22px;
+    border-radius: 20px;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 20px 70px rgba(0,0,0,.22);
+}
+.overlay-icon { margin-bottom: 7px; color: var(--brand-primary-dark); font-size: 38px; line-height: 1; }
+.overlay-card h2 { margin: 0 0 7px; font-size: 21px; }
+.overlay-card p { margin: 0; color: #646464; font-size: 13px; line-height: 1.5; }
+.game-toast {
+    position: fixed;
+    z-index: 30;
+    left: 50%;
+    bottom: 34px;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    padding: 11px 15px;
+    transform: translate(-50%, 16px);
+    border-radius: 10px;
+    background: #202124;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.45;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
+}
+.game-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+@media (min-width: 600px) {
+    .consumer-page { align-items: center; padding: 22px; }
+    .game-shell { min-height: min(900px, calc(100dvh - 44px)); border-radius: 8px; box-shadow: 0 8px 34px rgba(0,0,0,.09); }
+    .register-content { margin-top: 45px; }
+}
+@media (max-height: 690px) and (max-width: 599px) {
+    .game-shell { padding-top: 10px; }
+    .brand-area { min-height: 58px; padding-bottom: 5px; }
+    :root { --logo-height: 49px; --scanner-width: min(70vw, 270px); --scanner-height: min(78vw, 300px); }
+    .timer-section { margin-top: 3px; }
+    .hint-section { margin-top: 7px; }
+}
+
+:root {
+    --page-width: 430px;
+    --scanner-width: 320px;
+    --scanner-height: 330px;
+}
+
+/* Tablet portrait */
+@media (min-width: 600px) {
+    :root {
+        --page-width: 560px;
+        --scanner-width: 420px;
+        --scanner-height: 420px;
+    }
+}
+
+/* Desktop dan tablet landscape */
+@media (min-width: 900px) {
+    :root {
+        --page-width: 620px;
+        --scanner-width: 440px;
+        --scanner-height: 440px;
+    }
+}
