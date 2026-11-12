@@ -10,6 +10,8 @@ $activeMenu = 'barcode';
 $pageTitle = 'Data Barcode';
 $pageSubtitle = 'Master barcode dan penempatan per cabang';
 $pageScript = 'barcode.js';
+$barcodeCssPath = __DIR__ . '/assets/barcode.css';
+$barcodeCssVersion = is_file($barcodeCssPath) ? (string) filemtime($barcodeCssPath) : (string) time();
 $errors = [];
 $branches = [];
 $initialBranch = '';
@@ -51,7 +53,7 @@ $config = [
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="<?= bh_h($adminBase) ?>/assets/admin.css">
     <link rel="stylesheet" href="<?= bh_h($adminBase) ?>/assets/modules.css">
-    <link rel="stylesheet" href="<?= bh_h($adminBase) ?>/assets/barcode.css">
+    <link rel="stylesheet" href="<?= bh_h($adminBase) ?>/assets/barcode.css?v=<?= rawurlencode($barcodeCssVersion) ?>">
 </head>
 <body>
 <?php require __DIR__ . '/includes/sidebar.php'; ?>
