@@ -19,8 +19,8 @@
     --logo-height: 64px;
     --scanner-width: min(76vw, 320px);
     --scanner-height: min(86vw, 360px);
-    /* Contoh mengganti logo: --logo-image: url('../assets/img/logo-yang-kamu-pakai.png'); */
-    --logo-image: none;
+    /* Logo brand dari folder assets/image. Path relatif terhadap file assets/game.css. */
+    --logo-image: url('./image/logo.png');
     --footer-left-image: none;
     --footer-right-image: none;
     --footer-left-width: 110px;
