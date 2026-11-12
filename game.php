@@ -59,6 +59,11 @@ try {
 $baseUrl = bhg_base_url();
 $csrf = (string) $_SESSION['bh_game_csrf'];
 $branchName = bhg_game_branch_name($pdo, $branch);
+$cssPath = __DIR__ . '/assets/game.css';
+$gameJsPath = __DIR__ . '/assets/game.js';
+$cssVersion = is_file($cssPath) ? (string) filemtime($cssPath) : (string) time();
+$gameJsVersion = is_file($gameJsPath) ? (string) filemtime($gameJsPath) : (string) time();
+header('Cache-Control: no-cache, must-revalidate');
 ?>
 <!doctype html>
 <html lang="id">
@@ -67,7 +72,7 @@ $branchName = bhg_game_branch_name($pdo, $branch);
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#f7f2c9">
     <title><?= bhg_h($session['nama_game']) ?></title>
-    <link rel="stylesheet" href="<?= bhg_h($baseUrl) ?>/assets/game.css">
+    <link rel="stylesheet" href="<?= bhg_h($baseUrl) ?>/assets/game.css?v=<?= rawurlencode($cssVersion) ?>">
 </head>
 <body class="consumer-page play-page">
 <main class="game-shell play-shell" id="gameApp" data-inactivity-seconds="10">
@@ -145,6 +150,6 @@ window.BH_GAME_PAGE = {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-<script src="<?= bhg_h($baseUrl) ?>/assets/game.js" defer></script>
+<script src="<?= bhg_h($baseUrl) ?>/assets/game.js?v=<?= rawurlencode($gameJsVersion) ?>" defer></script>
 </body>
 </html>
