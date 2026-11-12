@@ -496,3 +496,125 @@ button { -webkit-tap-highlight-color: transparent; }
         margin-bottom: 14px;
     }
 }
+
+
+/* Registration form: gunakan seluruh viewport di tablet dan desktop,
+   tanpa bingkai abu-abu/putih di sisi halaman. */
+@media (min-width: 600px) {
+    .register-page {
+        align-items: stretch;
+        justify-content: stretch;
+        min-height: 100vh;
+        min-height: 100svh;
+        padding: 0;
+        background: var(--page-bg);
+    }
+
+    .register-page .register-shell {
+        width: 100%;
+        max-width: none;
+        min-height: 100vh;
+        min-height: 100svh;
+        height: auto;
+        padding: clamp(18px, 3.5vh, 40px) clamp(22px, 6vw, 96px) 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: var(--page-bg);
+        justify-content: flex-start;
+    }
+
+    .register-shell .brand-area {
+        min-height: 86px;
+        padding-bottom: 8px;
+    }
+
+    .register-shell .brand-logo {
+        width: min(260px, 42vw);
+        height: 76px;
+    }
+
+    .register-shell .register-content {
+        width: min(100%, 460px);
+        max-width: 460px;
+        margin: auto;
+        padding: clamp(24px, 4vw, 42px);
+        border: 1px solid rgba(120, 100, 30, .08);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, .48);
+        box-shadow: 0 14px 38px rgba(80, 68, 20, .07);
+    }
+
+    .register-content h1 {
+        font-size: clamp(30px, 3.4vw, 40px);
+    }
+
+    .register-content .branch-name {
+        margin-bottom: 28px;
+        font-size: 14px;
+    }
+
+    .register-form {
+        gap: 12px;
+    }
+
+    .register-form label {
+        margin-top: 8px;
+        font-size: 14px;
+    }
+
+    .register-form input {
+        min-height: 52px;
+        font-size: 16px;
+    }
+
+    .register-form .primary-button {
+        min-height: 52px;
+        margin-top: 18px;
+    }
+
+    .form-note {
+        font-size: 13px;
+    }
+
+    .register-shell .brand-footer {
+        width: calc(100% + (2 * var(--page-padding)));
+        margin: auto calc(-1 * var(--page-padding)) 0;
+    }
+
+    .register-shell .footer-social {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Monitor lebar: batasi lebar form, bukan lebar halaman. */
+@media (min-width: 1100px) {
+    .register-page .register-shell {
+        padding-left: max(7vw, 72px);
+        padding-right: max(7vw, 72px);
+    }
+
+    .register-shell .register-content {
+        max-width: 480px;
+    }
+}
+
+/* Tablet/desktop dengan tinggi pendek tetap menjaga footer dan form rapi. */
+@media (min-width: 600px) and (max-height: 700px) {
+    .register-page .register-shell {
+        padding-top: 14px;
+    }
+
+    .register-shell .brand-area {
+        min-height: 66px;
+    }
+
+    .register-shell .brand-logo {
+        height: 58px;
+    }
+
+    .register-shell .register-content {
+        padding: 22px 28px;
+    }
+}
