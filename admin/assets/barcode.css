@@ -19,3 +19,49 @@
 .barcode-format-preview-linear i{font-size:2rem;transform:scaleX(1.2)}
 .barcode-format-preview-qr i{font-size:2rem}
 @media(max-width:640px){.barcode-download-toolbar{align-items:stretch;flex-direction:column}.barcode-download-toolbar .btn{width:100%}.barcode-actions{justify-content:flex-start}.barcode-actions .btn-transfer{font-size:.75rem}}
+
+
+/* Preview barcode pada daftar, tepat di samping tombol download.
+   Hanya pola CODE128 yang ditampilkan, tanpa angka/serial di bawahnya. */
+.barcode-actions .barcode-row-preview {
+    display: inline-flex;
+    flex: 0 0 112px;
+    align-items: center;
+    justify-content: center;
+    width: 112px;
+    height: 38px;
+    overflow: hidden;
+    padding: 3px 5px;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    background: #fff;
+    vertical-align: middle;
+}
+.barcode-row-preview-svg {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 30px;
+}
+.barcode-row-preview.is-unavailable::after {
+    content: "Preview tidak tersedia";
+    color: #94a3b8;
+    font-size: 9px;
+    white-space: nowrap;
+}
+.barcode-table td:last-child {
+    min-width: 300px;
+}
+.barcode-actions .barcode-row-preview + .btn {
+    flex: 0 0 30px;
+}
+@media (max-width: 640px) {
+    .barcode-table td:last-child { min-width: 285px; }
+    .barcode-actions { flex-wrap: nowrap; }
+    .barcode-actions .barcode-row-preview {
+        flex-basis: 96px;
+        width: 96px;
+        height: 36px;
+    }
+    .barcode-row-preview-svg { height: 28px; }
+}
