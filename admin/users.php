@@ -56,9 +56,12 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
 
             // Hapus sesi terlebih dahulu karena FK tb_game_session ke tb_user memakai ON DELETE RESTRICT.
             // Detail barcode per sesi akan ikut terhapus melalui ON DELETE CASCADE.
-            $deleteSessions = $pdo->prepare('DELETE FROM tb_game_session WHERE id_user = ?');
-            $deleteSessions->execute([$userId]);
-            $removedSessions = $deleteSessions->rowCount();
+            $removedSessions = 0;
+            if (bh_table_exists($pdo, 'tb_game_session')) {
+                $deleteSessions = $pdo->prepare('DELETE FROM tb_game_session WHERE id_user = ?');
+                $deleteSessions->execute([$userId]);
+                $removedSessions = $deleteSessions->rowCount();
+            }
 
             // Bersihkan relasi legacy pada tb_game apabila kolom lama masih tersedia.
             if (bh_table_exists($pdo, 'tb_game') && bh_column_exists($pdo, 'tb_game', 'id_user')) {
