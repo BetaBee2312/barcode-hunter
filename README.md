@@ -146,6 +146,14 @@ barcode-hunter/
 
 ## Konfigurasi dan alur penggunaan
 
+### Login administrator
+
+1. Import file `admin/sql/admin_auth.sql` ke database aplikasi untuk membuat tabel `tb_admin`.
+2. Dari terminal pada folder root proyek, jalankan `php admin/create_admin.php` untuk membuat akun pertama. Akun pertama otomatis mendapat role `superadmin`; akun berikutnya mendapat role `admin`.
+3. Buka `/admin/login.php` dan masuk menggunakan username serta password yang dibuat melalui terminal.
+
+Pembuatan akun sengaja hanya tersedia melalui CLI, bukan pendaftaran publik. Password disimpan menggunakan `password_hash()`. Session admin memakai cookie terpisah dari session konsumen, berakhir setelah 30 menit tidak aktif, dan memiliki batas maksimum 8 jam. Gunakan HTTPS pada hosting agar cookie session admin memakai atribut Secure.
+
 ### Persiapan admin
 
 1. Pastikan database sudah diimpor dan file `config/config.php` tersedia.
