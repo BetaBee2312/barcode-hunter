@@ -269,6 +269,70 @@
         }
     }
 
+    async function celebrateSuccessfulScan(result) {
+        const completed = Boolean(result.completed);
+        const progress = Number(result.progress) || 0;
+        const target = Number(result.target) || 0;
+
+        // Confetti hanya dijalankan setelah server menyatakan scan valid.
+        if (typeof window.confetti === 'function' &&
+            !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const duration = completed ? 2200 : 1200;
+            const end = Date.now() + duration;
+
+            window.confetti({
+                particleCount: completed ? 120 : 65,
+                spread: completed ? 100 : 75,
+                startVelocity: completed ? 48 : 38,
+                origin: { y: 0.62 },
+                zIndex: 2000
+            });
+
+            if (completed) {
+                const burstTimer = window.setInterval(() => {
+                    window.confetti({
+                        particleCount: 45,
+                        angle: 60,
+                        spread: 65,
+                        origin: { x: 0, y: 0.68 },
+                        zIndex: 2000
+                    });
+                    window.confetti({
+                        particleCount: 45,
+                        angle: 120,
+                        spread: 65,
+                        origin: { x: 1, y: 0.68 },
+                        zIndex: 2000
+                    });
+                    if (Date.now() >= end) window.clearInterval(burstTimer);
+                }, 250);
+            }
+        }
+
+        if (window.Swal && typeof window.Swal.fire === 'function') {
+            await window.Swal.fire({
+                icon: 'success',
+                title: completed ? 'Luar biasa! Semua barcode ditemukan!' : 'Barcode ditemukan!',
+                html: completed
+                    ? `<div class="bh-swal-progress">Kamu berhasil mengumpulkan <strong>${progress}/${target}</strong> barcode. Permainan selesai!</div>`
+                    : `<div class="bh-swal-progress">Progress kamu sekarang <strong>${progress}/${target}</strong> barcode.</div>`,
+                confirmButtonText: completed ? 'Lihat hasil' : 'Lanjutkan',
+                showConfirmButton: completed,
+                timer: completed ? undefined : 1350,
+                timerProgressBar: !completed,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                heightAuto: false,
+                customClass: {
+                    popup: 'bh-swal-popup',
+                    confirmButton: 'bh-swal-confirm'
+                }
+            });
+        } else {
+            showToast(result.message || 'Barcode berhasil dipindai!');
+        }
+    }
+
     async function handleDecoded(decodedText) {
         if (scanBusy || currentStatus !== 'active') return;
         scanBusy = true;
@@ -277,7 +341,7 @@
 
         try {
             const result = await request('scan', { serial: String(decodedText || '').trim() });
-            showToast(result.message || 'Barcode berhasil dipindai.');
+            await celebrateSuccessfulScan(result);
             await refreshState();
             if (!result.completed && currentStatus === 'active') {
                 scannerStatus.textContent = 'Arahkan kamera ke barcode berikutnya.';
