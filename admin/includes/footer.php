@@ -6,6 +6,12 @@ $flash = $flash ?? bh_take_flash();
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= bh_h($adminBase) ?>/assets/admin.js"></script>
-<?php if (!empty($pageScript)): ?><script src="<?= bh_h($adminBase) ?>/assets/<?= bh_h($pageScript) ?>"></script><?php endif; ?>
+<?php
+if (!empty($pageScript)):
+    $pageScriptPath = __DIR__ . '/../assets/' . basename((string) $pageScript);
+    $pageScriptVersion = is_file($pageScriptPath) ? (string) filemtime($pageScriptPath) : (string) time();
+?>
+<script src="<?= bh_h($adminBase) ?>/assets/<?= bh_h($pageScript) ?>?v=<?= rawurlencode($pageScriptVersion) ?>"></script>
+<?php endif; ?>
 </body>
 </html>
