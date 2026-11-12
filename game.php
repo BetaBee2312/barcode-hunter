@@ -142,6 +142,8 @@ window.BH_GAME_PAGE = {
     inactivitySeconds: 10
 };
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <script src="<?= bhg_h($baseUrl) ?>/assets/game.js" defer></script>
 </body>
