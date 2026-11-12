@@ -104,7 +104,13 @@ $branchName = bhg_game_branch_name($pdo, $branch);
     </section>
 
     <footer class="brand-footer" aria-label="Media sosial Yomart">
-        <span class="footer-social" aria-hidden="true"></span>
+        <img
+            class="footer-social"
+            src="<?= bhg_h($baseUrl) ?>/assets/image/sosmed.png"
+            alt="Media sosial Yomart"
+            width="1921"
+            height="81"
+        >
     </footer>
 </main>
 
