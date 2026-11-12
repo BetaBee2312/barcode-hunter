@@ -21,11 +21,9 @@
     --scanner-height: min(86vw, 360px);
     /* Logo brand dari folder assets/image. Path relatif terhadap file assets/game.css. */
     --logo-image: url('./image/logo.png');
-    --footer-left-image: none;
-    --footer-right-image: none;
-    --footer-left-width: 110px;
-    --footer-right-width: 110px;
-    --footer-image-height: 15px;
+    --footer-social-image: url('./image/sosmed.png');
+    --footer-social-width: min(100%, 300px);
+    --footer-social-height: 22px;
     --font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -214,27 +212,21 @@ button { -webkit-tap-highlight-color: transparent; }
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    min-height: 24px;
+    min-height: 34px;
     width: calc(100% + (2 * var(--page-padding)));
     margin: auto calc(-1 * var(--page-padding)) 0;
     padding: 5px 10px;
     background: linear-gradient(180deg, #ffe66c, #f2cb35);
-    color: #55420a;
-    font-size: 9px;
-    font-weight: 700;
-    text-align: center;
 }
-.footer-left, .footer-right {
+.footer-social {
     display: block;
-    width: var(--footer-left-width);
-    height: var(--footer-image-height);
+    width: var(--footer-social-width);
+    height: var(--footer-social-height);
+    background-image: var(--footer-social-image);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
-.footer-left { background-image: var(--footer-left-image); }
-.footer-right { width: var(--footer-right-width); background-image: var(--footer-right-image); }
 
 .notice { margin-top: 14px; padding: 11px 13px; border-radius: 10px; font-size: 12px; line-height: 1.5; }
 .notice-error { background: #fff0ef; color: #8d2118; border: 1px solid #f2c3bf; }
