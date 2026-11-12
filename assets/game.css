@@ -22,8 +22,8 @@
     /* Logo brand dari folder assets/image. Path relatif terhadap file assets/game.css. */
     --logo-image: url('./image/logo.png');
     --footer-social-image: url('./image/sosmed.png');
-    --footer-social-width: min(100%, 300px);
-    --footer-social-height: 22px;
+    --footer-social-width: 95%;
+    --footer-social-height: 28px;
     --font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -212,7 +212,7 @@ button { -webkit-tap-highlight-color: transparent; }
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 34px;
+    min-height: 42px;
     width: calc(100% + (2 * var(--page-padding)));
     margin: auto calc(-1 * var(--page-padding)) 0;
     padding: 5px 10px;
