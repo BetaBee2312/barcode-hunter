@@ -283,26 +283,216 @@ button { -webkit-tap-highlight-color: transparent; }
     .hint-section { margin-top: 7px; }
 }
 
-:root {
-    --page-width: 430px;
-    --scanner-width: 320px;
-    --scanner-height: 330px;
-}
-
-/* Tablet portrait */
+/* Responsive consumer game: full-bleed di tablet dan desktop. */
 @media (min-width: 600px) {
-    :root {
-        --page-width: 560px;
-        --scanner-width: 420px;
-        --scanner-height: 420px;
+    .play-page {
+        align-items: stretch;
+        padding: 0;
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
+    .play-page .play-shell {
+        width: 100%;
+        max-width: none;
+        min-height: 100vh;
+        min-height: 100svh;
+        height: auto;
+        border-radius: 0;
+        box-shadow: none;
+        padding: clamp(16px, 2.5vh, 28px) clamp(22px, 4vw, 64px) 0;
+    }
+
+    .play-shell .brand-area {
+        min-height: 82px;
+        gap: 8px;
+    }
+
+    .play-shell .brand-logo {
+        width: min(250px, 42vw);
+        height: 70px;
+    }
+
+    .play-shell .branch-chip {
+        font-size: 13px;
+    }
+
+    .play-shell .scanner-box {
+        width: min(72vw, 480px);
+        height: min(48vh, 480px);
+        min-height: 300px;
+    }
+
+    .play-shell .timer-section {
+        margin-top: 12px;
+    }
+
+    .play-shell .timer-value {
+        font-size: clamp(30px, 4vh, 42px);
+    }
+
+    .play-shell .hint-section {
+        margin-top: 18px;
+        margin-bottom: 20px;
+    }
+
+    .play-shell .hint-text {
+        max-width: 560px;
+        font-size: clamp(15px, 1.5vw, 18px);
+    }
+
+    .play-shell .brand-footer {
+        margin: auto calc(-1 * var(--page-padding)) 0;
+    }
+
+    .play-shell .footer-social {
+        width: 100%;
+        height: auto;
     }
 }
 
-/* Desktop dan tablet landscape */
-@media (min-width: 900px) {
-    :root {
-        --page-width: 620px;
-        --scanner-width: 440px;
-        --scanner-height: 440px;
+/* Desktop dan tablet landscape: scanner di kiri, informasi permainan di kanan. */
+@media (min-width: 900px) and (orientation: landscape) {
+    .play-page .play-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+        grid-template-rows: auto minmax(0, 1fr) auto auto;
+        align-items: center;
+        column-gap: clamp(32px, 6vw, 100px);
+        row-gap: 0;
+        padding: clamp(14px, 2vh, 24px) clamp(30px, 6vw, 100px) 0;
+        overflow: hidden;
+    }
+
+    .play-shell .brand-area {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        flex-direction: row;
+        justify-content: center;
+        min-height: 78px;
+        padding-bottom: 8px;
+        gap: 18px;
+    }
+
+    .play-shell .brand-logo {
+        width: min(230px, 22vw);
+        height: 64px;
+    }
+
+    .play-shell .branch-chip {
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .play-shell .scanner-section {
+        grid-column: 1;
+        grid-row: 2 / 4;
+        justify-self: center;
+        align-self: center;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .play-shell .scanner-box {
+        width: min(48vh, 520px);
+        height: min(48vh, 520px);
+        min-height: 280px;
+    }
+
+    .play-shell .scanner-status {
+        min-height: 16px;
+        font-size: 12px;
+    }
+
+    .play-shell .timer-section {
+        grid-column: 2;
+        grid-row: 2;
+        align-self: end;
+        width: 100%;
+        margin: 0 0 18px;
+        text-align: center;
+    }
+
+    .play-shell .timer-value {
+        margin-top: 6px;
+        font-size: clamp(38px, 5vh, 54px);
+    }
+
+    .play-shell .progress-line {
+        margin-top: 9px;
+        font-size: 13px;
+    }
+
+    .play-shell .progress-track {
+        width: min(100%, 420px);
+        height: 8px;
+        margin-top: 12px;
+    }
+
+    .play-shell .hint-section {
+        grid-column: 2;
+        grid-row: 3;
+        align-self: start;
+        width: 100%;
+        margin: 0 0 24px;
+        padding: clamp(18px, 3vh, 28px);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, .48);
+        text-align: center;
+    }
+
+    .play-shell .hint-section .section-label {
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .play-shell .hint-text {
+        max-width: 520px;
+        min-height: 44px;
+        font-size: clamp(17px, 1.5vw, 22px);
+        line-height: 1.5;
+    }
+
+    .play-shell .brand-footer {
+        grid-column: 1 / -1;
+        grid-row: 4;
+        width: calc(100% + (2 * var(--page-padding)));
+        margin: 0 calc(-1 * var(--page-padding));
+        align-self: end;
+    }
+}
+
+/* Layar tablet portrait: tetap satu kolom, tetapi panel memenuhi viewport. */
+@media (min-width: 600px) and (orientation: portrait) {
+    .play-page .play-shell {
+        justify-content: flex-start;
+    }
+
+    .play-shell .scanner-box {
+        width: min(66vw, 500px);
+        height: min(46svh, 500px);
+    }
+
+    .play-shell .brand-footer {
+        margin-top: auto;
+    }
+}
+
+/* Layar desktop pendek: kecilkan scanner agar seluruh antarmuka tetap terlihat. */
+@media (min-width: 900px) and (orientation: landscape) and (max-height: 720px) {
+    .play-shell .scanner-box {
+        width: min(42vh, 400px);
+        height: min(42vh, 400px);
+        min-height: 250px;
+    }
+
+    .play-shell .timer-section {
+        margin-bottom: 12px;
+    }
+
+    .play-shell .hint-section {
+        padding: 14px 20px;
+        margin-bottom: 14px;
     }
 }
