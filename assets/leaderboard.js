@@ -2,8 +2,7 @@
     'use strict';
     const config = window.BH_LEADERBOARD_CONFIG || {};
     const list = document.getElementById('leaderboardList');
-    const total = document.getElementById('participantTotal');
-    const updated = document.getElementById('lastUpdated');
+        const updated = document.getElementById('lastUpdated');
     const branchName = document.querySelector('.branch-name');
     if (!list || !config.cabang) return;
 
@@ -26,7 +25,6 @@
 
     function render(data) {
         const rows = Array.isArray(data.data) ? data.data.slice(0, 5) : [];
-        if (total) total.textContent = Number(data.total_peserta || rows.length).toLocaleString('id-ID');
         if (branchName && data.nama_cabang) branchName.textContent = data.nama_cabang;
 
         const markup = rows.length ? rows.map((row) => {
@@ -37,7 +35,7 @@
                 '<div class="player-cell"><div class="player-name">' + escapeHtml(row.nama) + '</div>' +
                 '<div class="player-phone">' + escapeHtml(row.telepon) + '</div></div>' +
                 '<div class="point-cell"><span class="point-pill">' + escapeHtml(row.point) + '</span></div></article>';
-        }).join('') : '<div class="leaderboard-message"><strong>Belum ada peserta yang mencetak poin</strong><span>Hasil scan akan muncul otomatis di layar ini.</span></div>';
+        }).join('') : '<div class="leaderboard-message"><strong>Belum ada pemenang</strong></div>';
 
         if (markup !== lastPayload) {
             list.innerHTML = markup;
