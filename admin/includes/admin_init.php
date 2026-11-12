@@ -111,7 +111,7 @@ function bh_random_id(string $prefix, int $maxLength = 65): string
 
 function bh_admin_base(): string
 {
-    $script = str_replace('\\\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? '/admin/index.php'));
+    $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? '/admin/index.php'));
     $apiPosition = strpos($script, '/api/');
     if ($apiPosition !== false) {
         $appRoot = rtrim(substr($script, 0, $apiPosition), '/');
@@ -177,7 +177,7 @@ if (!defined('BH_ADMIN_ALLOW_GUEST') || BH_ADMIN_ALLOW_GUEST !== true) {
             ]);
         }
         session_destroy();
-        $scriptPath = str_replace('\\\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+        $scriptPath = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
         if (strpos($scriptPath, '/api/') !== false) {
             http_response_code(401);
             header('Content-Type: application/json; charset=utf-8');
