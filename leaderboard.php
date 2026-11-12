@@ -136,26 +136,11 @@ $jsVersion = is_file($jsPath) ? (string) filemtime($jsPath) : (string) time();
                 <p><?= bhg_h($pageError) ?></p>
             </section>
         <?php else: ?>
-            <section class="leaderboard-content">
-                <div class="leaderboard-intro">
-                    <div>
-                        <span class="section-kicker">PERINGKAT CABANG</span>
-                        <h2>Top 5 Pemburu Barcode</h2>
-                        <p>Poin terbanyak berada di atas. Jika poin sama, waktu bermain tercepat menjadi penentu.</p>
-                    </div>
-                    <div class="participant-total"><strong id="participantTotal">0</strong><span>Peserta</span></div>
-                </div>
-                <div class="leaderboard-columns" aria-hidden="true">
-                    <span>PERINGKAT</span><span>NAMA PESERTA</span><span>POINT</span>
-                </div>
+            <section class="leaderboard-content" aria-label="Lima peserta teratas">
                 <div class="leaderboard-list" id="leaderboardList" aria-live="polite" aria-busy="true">
-                    <div class="leaderboard-message">Memuat leaderboard...</div>
+                    <div class="leaderboard-message">Memuat pemenang...</div>
                 </div>
             </section>
-            <footer class="leaderboard-footer">
-                <span>Data diperbarui otomatis setiap 5 detik</span>
-                <span>BARCODE HUNTING <b>•</b> <?= date('Y') ?></span>
-            </footer>
             <script>
                 window.BH_LEADERBOARD_CONFIG = {
                     baseUrl: <?= json_encode($baseUrl, JSON_UNESCAPED_SLASHES) ?>,
