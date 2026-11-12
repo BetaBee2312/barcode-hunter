@@ -3,66 +3,73 @@
 declare(strict_types=1);
 require_once __DIR__ . '/game-bootstrap.php';
 
+// Gunakan helper query yang sama dengan leaderboard admin agar aturan ranking konsisten.
+if (!function_exists('bh_table_exists')) {
+    function bh_table_exists(PDO $pdo, string $table): bool
+    {
+        return bhg_table_exists($pdo, $table);
+    }
+}
+if (!function_exists('bh_column_exists')) {
+    function bh_column_exists(PDO $pdo, string $table, string $column): bool
+    {
+        $stmt = $pdo->prepare(
+            'SELECT 1 FROM information_schema.columns
+             WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ? LIMIT 1'
+        );
+        $stmt->execute([$table, $column]);
+        return (bool) $stmt->fetchColumn();
+    }
+}
+require_once __DIR__ . '/admin/includes/game_data.php';
+
 date_default_timezone_set('Asia/Jakarta');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
 $isJson = (string) ($_GET['format'] ?? '') === 'json';
-$cabangRaw = trim((string) ($_GET['cabang'] ?? ''));
-$cabang = filter_var($cabangRaw, FILTER_VALIDATE_INT);
+$cabang = filter_var($_GET['cabang'] ?? null, FILTER_VALIDATE_INT);
 $branchName = '';
 $pageError = '';
 $rows = [];
+$totalPeserta = 0;
 
-if ($cabang === false || $cabang < 1) {
+if ($cabang === false || $cabang === null || $cabang < 1) {
     $pageError = 'Kode cabang belum valid. Tambahkan kode cabang pada URL, misalnya ?cabang=23212.';
     if ($isJson) bhg_json(['success' => false, 'message' => $pageError], 422);
 } else {
     try {
-        bhg_require_consumer_schema($pdo);
         $branchName = 'Cabang ' . (int) $cabang;
-        if (bhg_table_exists($pdo, 'tb_cabang')
-            && bhg_column_exists($pdo, 'tb_cabang', 'kode_cabang')
-            && bhg_column_exists($pdo, 'tb_cabang', 'nama_cabang')) {
+
+        // Nama cabang dibaca langsung dari master cabang.
+        if (bh_table_exists($pdo, 'tb_cabang')
+            && bh_column_exists($pdo, 'tb_cabang', 'kode_cabang')
+            && bh_column_exists($pdo, 'tb_cabang', 'nama_cabang')) {
             $branchStmt = $pdo->prepare('SELECT nama_cabang FROM tb_cabang WHERE kode_cabang = ? LIMIT 1');
             $branchStmt->execute([(int) $cabang]);
             $foundName = $branchStmt->fetchColumn();
-            if ($foundName !== false && $foundName !== '') $branchName = (string) $foundName;
+            if ($foundName !== false && trim((string) $foundName) !== '') {
+                $branchName = (string) $foundName;
+            }
         }
 
-        $sql = "SELECT
-                    s.id_session, s.started_at, s.durasi_detik, s.sisa_detik,
-                    s.deadline_at, s.status_session, u.nama, u.no_hp,
-                    g.barcode_list AS target_barcode,
-                    COALESCE(sc.total_scan, 0) AS total_scan,
-                    CASE
-                        WHEN s.status_session = 'active' AND s.deadline_at IS NOT NULL
-                        THEN GREATEST(s.durasi_detik - GREATEST(TIMESTAMPDIFF(SECOND, NOW(), s.deadline_at), 0), 0)
-                        ELSE GREATEST(s.durasi_detik - COALESCE(s.sisa_detik, s.durasi_detik), 0)
-                    END AS waktu_main_detik
-                FROM tb_game_session s
-                INNER JOIN tb_game g ON g.id_game = s.id_game
-                INNER JOIN tb_user u ON u.id_user = s.id_user
-                LEFT JOIN (
-                    SELECT id_session,
-                        SUM(CASE WHEN status_scan = 'scanned' THEN 1 ELSE 0 END) AS total_scan
-                    FROM tb_session_barcode
-                    GROUP BY id_session
-                ) sc ON sc.id_session = s.id_session
-                WHERE g.cabang = ?
-                  AND COALESCE(sc.total_scan, 0) > 0
-                ORDER BY total_scan DESC, waktu_main_detik ASC, s.started_at ASC, s.id_session ASC
-                LIMIT 100";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([(int) $cabang]);
+        // Helper mengurutkan jumlah scan terbanyak dahulu, lalu waktu bermain tercepat.
+        $rankedRows = bh_game_result_rows($pdo, (int) $cabang);
+        $rankedRows = array_values(array_filter(
+            $rankedRows,
+            static fn(array $row): bool => (int) ($row['total_scan'] ?? 0) > 0
+        ));
+        $totalPeserta = count($rankedRows);
 
-        foreach ($stmt->fetchAll() as $index => $record) {
-            $digits = preg_replace('/\D+/', '', (string) $record['no_hp']) ?? '';
-            $target = max(1, (int) $record['target_barcode']);
-            $scanned = (int) $record['total_scan'];
-            // Nomor asli tidak pernah dimasukkan ke payload publik.
+        // Ambil maksimal lima peserta untuk layar TV.
+        foreach (array_slice($rankedRows, 0, 5) as $index => $record) {
+            $digits = preg_replace('/\D+/', '', (string) ($record['no_hp'] ?? '')) ?? '';
+            $target = max(1, (int) ($record['barcode_list'] ?? 1));
+            $scanned = (int) ($record['total_scan'] ?? 0);
+
             $rows[] = [
                 'rank' => $index + 1,
-                'nama' => (string) $record['nama'],
+                'nama' => (string) ($record['nama'] ?? ''),
+                // Nomor asli tidak pernah dikirim ke browser.
                 'telepon' => 'xxxx xxxx ' . substr($digits, -4),
                 'point' => $scanned . '/' . $target,
             ];
@@ -73,15 +80,20 @@ if ($cabang === false || $cabang < 1) {
                 'success' => true,
                 'cabang' => (int) $cabang,
                 'nama_cabang' => $branchName,
-                'total_peserta' => count($rows),
+                'total_peserta' => $totalPeserta,
                 'updated_at' => date(DATE_ATOM),
                 'data' => $rows,
             ]);
         }
     } catch (Throwable $e) {
         error_log('[Barcode Hunting Leaderboard] ' . $e->getMessage());
-        if ($isJson) bhg_json(['success' => false, 'message' => 'Leaderboard belum dapat dimuat. Periksa konfigurasi database.'], 500);
-        $pageError = 'Leaderboard belum dapat dimuat. Periksa konfigurasi database dan tabel game.';
+        if ($isJson) {
+            bhg_json([
+                'success' => false,
+                'message' => 'Leaderboard belum dapat dimuat. Periksa struktur tabel V2 dan data master cabang.'
+            ], 500);
+        }
+        $pageError = 'Leaderboard belum dapat dimuat. Periksa struktur tabel V2 dan data master cabang.';
     }
 }
 
@@ -96,7 +108,7 @@ $jsVersion = is_file($jsPath) ? (string) filemtime($jsPath) : (string) time();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#101827">
+    <meta name="theme-color" content="#f7f2c9">
     <meta name="robots" content="noindex, nofollow">
     <title>Leaderboard <?= bhg_h($branchName ?: 'Barcode Hunting') ?></title>
     <link rel="stylesheet" href="<?= bhg_h($baseUrl) ?>/assets/leaderboard.css?v=<?= rawurlencode($cssVersion) ?>">
@@ -128,20 +140,20 @@ $jsVersion = is_file($jsPath) ? (string) filemtime($jsPath) : (string) time();
                 <div class="leaderboard-intro">
                     <div>
                         <span class="section-kicker">PERINGKAT CABANG</span>
-                        <h2>Siapa yang paling unggul?</h2>
-                        <p>Jumlah barcode berhasil terbanyak diutamakan. Jika poin sama, waktu bermain tercepat berada di atas.</p>
+                        <h2>Top 5 Pemburu Barcode</h2>
+                        <p>Poin terbanyak berada di atas. Jika poin sama, waktu bermain tercepat menjadi penentu.</p>
                     </div>
                     <div class="participant-total"><strong id="participantTotal">0</strong><span>Peserta</span></div>
                 </div>
                 <div class="leaderboard-columns" aria-hidden="true">
-                    <span>RANK</span><span>NAMA PESERTA</span><span>POINT</span>
+                    <span>PERINGKAT</span><span>NAMA PESERTA</span><span>POINT</span>
                 </div>
                 <div class="leaderboard-list" id="leaderboardList" aria-live="polite" aria-busy="true">
                     <div class="leaderboard-message">Memuat leaderboard...</div>
                 </div>
             </section>
             <footer class="leaderboard-footer">
-                <span>Leaderboard diperbarui otomatis setiap 5 detik</span>
+                <span>Data diperbarui otomatis setiap 5 detik</span>
                 <span>BARCODE HUNTING <b>•</b> <?= date('Y') ?></span>
             </footer>
             <script>
