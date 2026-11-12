@@ -93,13 +93,41 @@
                 <td>${escapeHtml(branchName(row))}<small class="d-block text-secondary">${escapeHtml(row.cabang)}</small></td>
                 <td><span class="number-pill">${Number(row.number_barcode).toLocaleString('id-ID')}</span></td>
                 <td><div class="barcode-actions">
+                    <span class="barcode-row-preview" title="Pratinjau CODE128 tanpa angka">
+                        <svg class="barcode-row-preview-svg" data-serial="${escapeHtml(row.barcode_serial)}" role="img" aria-label="Pratinjau barcode"></svg>
+                    </span>
                     <button class="btn btn-sm btn-outline-success" type="button" data-action="download" data-id="${escapeHtml(row.id_brc)}" title="Unduh barcode"><i class="bi bi-download"></i></button>
                     <button class="btn btn-sm btn-outline-secondary" type="button" data-action="edit" data-id="${escapeHtml(row.id_brc)}" title="Edit"><i class="bi bi-pencil"></i></button>
                     <button class="btn btn-sm btn-outline-primary btn-transfer" type="button" data-action="assign" data-id="${escapeHtml(row.id_brc)}"><i class="bi bi-arrow-left-right me-1"></i>Pindah</button>
                     <button class="btn btn-sm btn-outline-danger" type="button" data-action="delete" data-id="${escapeHtml(row.id_brc)}" title="Hapus"><i class="bi bi-trash3"></i></button>
                 </div></td>
             </tr>`).join('');
+        renderBarcodePreviews();
         updateBulkPrintButton();
+    };
+
+    const renderBarcodePreviews = () => {
+        const previews = document.querySelectorAll('.barcode-row-preview-svg[data-serial]');
+        previews.forEach((svg) => {
+            const serial = svg.dataset.serial || '';
+            if (!serial || typeof window.JsBarcode !== 'function') {
+                svg.closest('.barcode-row-preview')?.classList.add('is-unavailable');
+                return;
+            }
+            try {
+                window.JsBarcode(svg, serial, {
+                    format: 'CODE128',
+                    displayValue: false,
+                    margin: 1,
+                    width: 1.25,
+                    height: 30,
+                    lineColor: '#111111',
+                    background: '#ffffff'
+                });
+            } catch (_) {
+                svg.closest('.barcode-row-preview')?.classList.add('is-unavailable');
+            }
+        });
     };
 
     const loadBarcodes = async () => {
