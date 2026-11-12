@@ -103,10 +103,8 @@ $branchName = bhg_game_branch_name($pdo, $branch);
         <p class="hint-text" id="hintText">Memuat petunjuk...</p>
     </section>
 
-    <footer class="brand-footer">
-        <!-- Ubah isi footer sesuai kebutuhan branding melalui markup/CSS -->
-        <span class="footer-left" aria-hidden="true"></span>
-        <span class="footer-right" aria-hidden="true"></span>
+    <footer class="brand-footer" aria-label="Media sosial Yomart">
+        <span class="footer-social" aria-hidden="true"></span>
     </footer>
 </main>
 
