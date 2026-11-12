@@ -1,0 +1,25 @@
+:root{--auth-page:#f7f2c9;--auth-yellow:#f5d84d;--auth-yellow-dark:#e7bd24;--auth-ink:#202124;--auth-muted:#626262}
+*{box-sizing:border-box}
+body.admin-auth-page{min-height:100vh;margin:0;padding:28px 16px;display:grid;place-items:center;background:radial-gradient(circle at 8% 8%,rgba(245,216,77,.23),transparent 28%),var(--auth-page);color:var(--auth-ink);font-family:Arial,Helvetica,sans-serif}
+.auth-shell{width:min(100%,440px)}
+.auth-brand{text-align:center;margin-bottom:22px}
+.auth-logo{width:190px;height:70px;object-fit:contain;margin-bottom:16px}
+.auth-kicker{display:block;margin-bottom:7px;color:#806900;font-size:11px;font-weight:900;letter-spacing:.2em}
+.auth-brand h1{margin:0;font-size:28px;font-weight:850;letter-spacing:-.8px}
+.auth-brand p{margin:8px 0 0;color:var(--auth-muted);font-size:13px;line-height:1.5}
+.auth-card{padding:27px;border:1px solid rgba(231,189,36,.35);border-radius:20px;background:#fff;box-shadow:0 16px 42px rgba(76,65,18,.09)}
+.auth-card-heading{display:flex;align-items:center;gap:12px;margin-bottom:23px}
+.auth-icon{display:grid;place-items:center;width:44px;height:44px;flex:0 0 44px;border-radius:13px;background:#fff5c7;color:#806900;font-size:20px}
+.auth-card-heading h2{margin:0;font-size:18px;font-weight:800}
+.auth-card-heading p{margin:4px 0 0;color:var(--auth-muted);font-size:12px}
+.auth-card .form-label{margin-bottom:7px;color:#404040;font-size:12px;font-weight:750}
+.auth-input-wrap{position:relative}
+.auth-input-wrap>i{position:absolute;top:50%;left:13px;z-index:2;transform:translateY(-50%);color:#8b8060}
+.auth-input-wrap .form-control{height:46px;padding-left:39px;border-color:#e7e4d5;border-radius:10px;font-size:13px}
+.auth-input-wrap .form-control:focus{border-color:var(--auth-yellow-dark);box-shadow:0 0 0 .2rem rgba(245,216,77,.2)}
+.auth-submit{height:46px;border:1px solid var(--auth-yellow-dark);border-radius:10px;background:var(--auth-yellow);color:#26220f;font-size:13px;font-weight:850}
+.auth-submit:hover{background:#f1ce31;border-color:#dcb11c;color:#26220f}
+.auth-submit:disabled{opacity:.55}
+.auth-footnote{margin-top:17px;color:#8b8060;font-size:10px;text-align:center}
+.auth-shell>footer{margin-top:19px;color:#91896b;font-size:10px;letter-spacing:.12em;text-align:center}
+@media(max-width:480px){body.admin-auth-page{padding:18px 14px}.auth-card{padding:22px 18px}.auth-logo{width:160px;height:58px}}
