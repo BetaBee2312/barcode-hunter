@@ -111,7 +111,13 @@ function bh_random_id(string $prefix, int $maxLength = 65): string
 
 function bh_admin_base(): string
 {
-    $base = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/admin/index.php'), '/');
+    $script = str_replace('\\\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? '/admin/index.php'));
+    $apiPosition = strpos($script, '/api/');
+    if ($apiPosition !== false) {
+        $appRoot = rtrim(substr($script, 0, $apiPosition), '/');
+        return $appRoot . '/admin';
+    }
+    $base = rtrim(dirname($script), '/');
     return $base !== '' ? $base : '/admin';
 }
 
@@ -171,6 +177,17 @@ if (!defined('BH_ADMIN_ALLOW_GUEST') || BH_ADMIN_ALLOW_GUEST !== true) {
             ]);
         }
         session_destroy();
+        $scriptPath = str_replace('\\\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+        if (strpos($scriptPath, '/api/') !== false) {
+            http_response_code(401);
+            header('Content-Type: application/json; charset=utf-8');
+            header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Sesi admin berakhir. Silakan login kembali.'
+            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            exit;
+        }
         header('Location: ' . bh_admin_base() . '/login.php');
         exit;
     }
