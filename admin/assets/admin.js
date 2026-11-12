@@ -31,6 +31,31 @@
     // Always start closed on both desktop and mobile.
     setSidebar(false);
 
+    // Isi dan tampilkan modal edit peserta dari tombol pada tabel.
+    document.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-user-edit]');
+        if (!button) return;
+
+        const modalElement = document.getElementById('editUserModal');
+        if (!modalElement || !window.bootstrap) return;
+
+        const id = button.dataset.id || '';
+        const name = button.dataset.name || '';
+        const phone = button.dataset.phone || '';
+        const idInput = document.getElementById('editUserId');
+        const nameInput = document.getElementById('editUserName');
+        const phoneInput = document.getElementById('editUserPhone');
+        const idLabel = document.getElementById('editUserIdLabel');
+
+        if (!idInput || !nameInput || !phoneInput) return;
+        idInput.value = id;
+        nameInput.value = name;
+        phoneInput.value = phone;
+        if (idLabel) idLabel.textContent = id;
+
+        bootstrap.Modal.getOrCreateInstance(modalElement).show();
+    });
+
     const swalReady = () => typeof window.Swal !== 'undefined';
     const flash = window.BH_FLASH;
     if (flash && swalReady()) {
