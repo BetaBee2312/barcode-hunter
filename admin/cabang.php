@@ -5,26 +5,7 @@
  */
 declare(strict_types=1);
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-
-date_default_timezone_set('Asia/Jakarta');
-
-$configPath = dirname(__DIR__) . '/config/config.php';
-if (!is_file($configPath)) {
-    http_response_code(500);
-    exit('File koneksi tidak ditemukan. Pastikan file berada di /config/config.php.');
-}
-require_once $configPath;
-
-if (!isset($pdo) || !$pdo instanceof PDO) {
-    http_response_code(500);
-    exit('Koneksi database tidak tersedia. Periksa /config/config.php.');
-}
-
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+require_once __DIR__ . '/includes/admin_init.php';
 
 function h(mixed $value): string
 {
