@@ -24,7 +24,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         if ($action === 'update') {
             $name = trim((string) ($_POST['nama'] ?? ''));
             $phone = preg_replace('/\\D+/', '', (string) ($_POST['no_hp'] ?? '')) ?? '';
-            if ($name === '' || mb_strlen($name, 'UTF-8') > 100) {
+            $nameLength = function_exists('mb_strlen') ? mb_strlen($name, 'UTF-8') : strlen($name);
+            if ($name === '' || $nameLength > 100) {
                 throw new RuntimeException('Nama wajib diisi dan maksimal 100 karakter.');
             }
             if (strlen($phone) < 8 || strlen($phone) > 20) {
