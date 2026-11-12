@@ -91,3 +91,9 @@ body.sidebar-open { overflow: hidden; }
     .winner-metrics { gap: 5px; }
     .metric-value { font-size: 11px; }
 }
+
+
+/* Admin session controls */
+.admin-logout-form{margin:0;flex:0 0 auto}
+.admin-logout-form .btn{white-space:nowrap;font-size:11px;font-weight:650}
+@media(max-width:420px){.admin-logout-form .btn{width:36px;height:35px;padding:0}.admin-logout-form .btn span{display:none}.admin-logout-form .btn i{margin:0!important}}
