@@ -22,6 +22,11 @@ if (!$cabang || $cabang < 1) {
 
 $baseUrl = bhg_base_url();
 $csrf = (string) $_SESSION['bh_game_csrf'];
+$cssPath = __DIR__ . '/assets/game.css';
+$registerJsPath = __DIR__ . '/assets/register.js';
+$cssVersion = is_file($cssPath) ? (string) filemtime($cssPath) : (string) time();
+$registerJsVersion = is_file($registerJsPath) ? (string) filemtime($registerJsPath) : (string) time();
+header('Cache-Control: no-cache, must-revalidate');
 ?>
 <!doctype html>
 <html lang="id">
@@ -30,7 +35,7 @@ $csrf = (string) $_SESSION['bh_game_csrf'];
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#f7f2c9">
     <title>Barcode Hunting</title>
-    <link rel="stylesheet" href="<?= bhg_h($baseUrl) ?>/assets/game.css">
+    <link rel="stylesheet" href="<?= bhg_h($baseUrl) ?>/assets/game.css?v=<?= rawurlencode($cssVersion) ?>">
 </head>
 <body class="consumer-page register-page">
 <main class="game-shell register-shell">
@@ -81,6 +86,6 @@ window.BH_GAME_PAGE = {
     inactivitySeconds: 10
 };
 </script>
-<script src="<?= bhg_h($baseUrl) ?>/assets/register.js" defer></script>
+<script src="<?= bhg_h($baseUrl) ?>/assets/register.js?v=<?= rawurlencode($registerJsVersion) ?>" defer></script>
 </body>
 </html>
