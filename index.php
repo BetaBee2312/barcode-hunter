@@ -64,10 +64,14 @@ $csrf = (string) $_SESSION['bh_game_csrf'];
         <?php endif; ?>
     </section>
 
-    <footer class="brand-footer">
-        <!-- Ganti teks/link footer sesuai branding event melalui index.php dan CSS -->
-        <span class="footer-left" aria-hidden="true"></span>
-        <span class="footer-right" aria-hidden="true"></span>
+    <footer class="brand-footer" aria-label="Media sosial Yomart">
+        <img
+            class="footer-social"
+            src="<?= bhg_h($baseUrl) ?>/assets/image/sosmed.png"
+            alt="Media sosial Yomart"
+            width="1921"
+            height="81"
+        >
     </footer>
 </main>
 <script>
