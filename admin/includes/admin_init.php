@@ -2,7 +2,23 @@
 /** Shared bootstrap for Barcode Hunting admin modules. */
 declare(strict_types=1);
 
+// Sesi admin dipisahkan dari BH_GAMESESSID milik konsumen.
 if (session_status() !== PHP_SESSION_ACTIVE) {
+    if (session_name() !== 'BH_ADMINSESSID') {
+        session_name('BH_ADMINSESSID');
+    }
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.use_only_cookies', '1');
+    ini_set('session.cookie_httponly', '1');
+    ini_set('session.cookie_samesite', 'Lax');
+    $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => $isHttps,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
     session_start();
 }
 
@@ -111,4 +127,56 @@ function bh_render_flash_script(?array $flash): void
         ['type' => $type, 'message' => $message],
         JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
     ) . ';</script>';
+}
+
+// Semua halaman admin dan endpoint /api admin wajib melewati guard ini.
+// Hanya login.php dan utilitas setup CLI yang boleh mengaktifkan BH_ADMIN_ALLOW_GUEST.
+if (!defined('BH_ADMIN_ALLOW_GUEST') || BH_ADMIN_ALLOW_GUEST !== true) {
+    $adminId = (int) ($_SESSION['bh_admin_id'] ?? 0);
+    $now = time();
+    $lastActivity = (int) ($_SESSION['bh_admin_last_activity'] ?? 0);
+    $authenticatedAt = (int) ($_SESSION['bh_admin_authenticated_at'] ?? 0);
+    $validSession = $adminId > 0
+        && $lastActivity > 0
+        && $authenticatedAt > 0
+        && ($now - $lastActivity) <= 1800
+        && ($now - $authenticatedAt) <= 28800;
+
+    if ($validSession && bh_table_exists($pdo, 'tb_admin')) {
+        $adminStmt = $pdo->prepare(
+            'SELECT id_admin, username, nama_lengkap, role
+             FROM tb_admin
+             WHERE id_admin = ? AND is_active = 1
+             LIMIT 1'
+        );
+        $adminStmt->execute([$adminId]);
+        $adminRecord = $adminStmt->fetch();
+        $validSession = is_array($adminRecord);
+    } else {
+        $adminRecord = null;
+        $validSession = false;
+    }
+
+    if (!$validSession) {
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $cookie = session_get_cookie_params();
+            setcookie(session_name(), '', [
+                'expires' => time() - 42000,
+                'path' => $cookie['path'] ?: '/',
+                'domain' => $cookie['domain'],
+                'secure' => (bool) $cookie['secure'],
+                'httponly' => (bool) $cookie['httponly'],
+                'samesite' => $cookie['samesite'] ?? 'Lax',
+            ]);
+        }
+        session_destroy();
+        header('Location: ' . bh_admin_base() . '/login.php');
+        exit;
+    }
+
+    $_SESSION['bh_admin_last_activity'] = $now;
+    $_SESSION['bh_admin_username'] = (string) $adminRecord['username'];
+    $_SESSION['bh_admin_name'] = (string) $adminRecord['nama_lengkap'];
+    $_SESSION['bh_admin_role'] = (string) $adminRecord['role'];
 }
