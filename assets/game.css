@@ -21,10 +21,6 @@
     --scanner-height: min(86vw, 360px);
     /* Logo brand dari folder assets/image. Path relatif terhadap file assets/game.css. */
     --logo-image: url('./image/logo.png');
-    --footer-social-image: url('./image/sosmed.png');
-    /* Sosmed.png memiliki ruang transparan di sisi gambar; perbesar sedikit agar artwork memenuhi footer. */
-    --footer-social-width: 115%;
-    --footer-social-height: 36px;
     --font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -209,24 +205,24 @@ button { -webkit-tap-highlight-color: transparent; }
 .hint-section .section-label { margin-bottom: 5px; }
 .hint-text { min-height: 19px; margin: 0 auto; max-width: 340px; color: #363636; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
 
+/* Banner sosial media sudah memiliki background sendiri (1921 × 81 px).
+   Gunakan img agar rasio asli terjaga dan ukurannya mengikuti lebar halaman. */
 .brand-footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 48px;
+    display: block;
+    flex: 0 0 auto;
     width: calc(100% + (2 * var(--page-padding)));
     margin: auto calc(-1 * var(--page-padding)) 0;
-    padding: 5px 10px;
-    background: linear-gradient(180deg, #ffe66c, #f2cb35);
+    padding: 0;
+    background: transparent;
+    line-height: 0;
 }
 .footer-social {
     display: block;
-    width: var(--footer-social-width);
-    height: var(--footer-social-height);
-    background-image: var(--footer-social-image);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    object-fit: contain;
 }
 
 .notice { margin-top: 14px; padding: 11px 13px; border-radius: 10px; font-size: 12px; line-height: 1.5; }
